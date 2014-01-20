@@ -1,3 +1,5 @@
+import Control.Monad
+
 not' True = False
 not' False = True
 
@@ -31,7 +33,10 @@ equ' a b = not' $ xor' a b
 
 infixl 4 `or'`
 infixl 6 `and'`
+infixl 3 `equ'`
 
-table' :: (Bool -> Bool -> Bool) -> IO()
-table' f = mapM_ putStrLn [show a ++ " " ++ show b ++ " " ++ show (f a b)
-					| a <- [True, False], b <- [True, False]] 
+tablen :: Int -> ([Bool] -> Bool) -> IO()
+tablen n f = mapM_ putStrLn [toStr x ++ " " ++ show (f x)|x <- xs]
+	where 
+		xs = replicateM n [True, False]
+		toStr = unwords . map (\x -> show x ++ " ")
